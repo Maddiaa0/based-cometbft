@@ -1,0 +1,10 @@
+**/node_modules/*
+**/target/*
+**/config/*
+**/data/*
+
+proposer_contract/lib/*
+proposer_contract/broadcast/*
+
+# Temporarily git ignore this for now - will probably include it as a submodule pointing at my branch?
+cometbft/
