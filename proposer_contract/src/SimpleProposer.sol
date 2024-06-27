@@ -6,9 +6,6 @@ import {UltraVerifier as VrfVerifier} from "./vrfVerifier.sol";
 // Note: when reading this contract, please note i am not prioritizing efficiency in anyway
 // do not remember me like this
 contract SimpleProposer {
-    // Next steps:
-    // - We probably want the votes to be weighted by stake in some way - rather than have all votes be equal
-
     mapping(uint256 slot => bytes32 pubkey) public $slotProposer;
     mapping(uint256 slot => bytes32 winningChallenge) public $loterryWinnigValues;
 
@@ -17,6 +14,7 @@ contract SimpleProposer {
 
     uint256 public $currentSlot = 0;
 
+    // SnARks MeNTIONed - Take a shot!
     VrfVerifier verifier;
 
     constructor() {
@@ -27,9 +25,6 @@ contract SimpleProposer {
     // Proposer submits that they got the lowest result in a "vrf" just a snark of a hash function, not even a real hash function
     // it is currently pedersen but i digress
     function submitVRF(bytes calldata proof, bytes32[] calldata publicInputs) public {
-        // if (!$proposerMapping[proposer]) {
-        //     revert("Proposer not in registry");
-        // }
 
         bytes32 currentWinningChallenge = $loterryWinnigValues[$currentSlot];
 

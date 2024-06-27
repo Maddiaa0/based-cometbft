@@ -1,3 +1,3 @@
-[submodule "test/comet-fork"]
-	path = test/comet-fork
+[submodule "cometbft-fork"]
+	path = cometbft-fork
 	url = git@github.com:Maddiaa0/cometbft.git

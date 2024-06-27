@@ -63,10 +63,10 @@ describe("Comet BFT alternative proposer test", () => {
         const proposerContract = new ethers.Contract(PROPOSAL_CONTRACT_ADDRESS, SimpleProposerAbi, wallet);
 
         // Send the transaction to the pro
-        const nargoValPub = "0x" + "5d1d11c70e635ef6f290bf7a7da2e075eb9c634f".padStart(64, "0");
+        const nargoValPub = "0x" + "76e7c52694335376f74fadecbea894efec621346".padStart(64, "0");
         const nargoSalt = "0x" + Buffer.from(randomBytes(30)).toString("hex");
 
-        const defaultValdiatorPubKey = Buffer.from("5d1d11c70e635ef6f290bf7a7da2e075eb9c634f".padStart(64, "0"), "hex");
+        const defaultValdiatorPubKey = Buffer.from("76e7c52694335376f74fadecbea894efec621346".padStart(64, "0"), "hex");
         const [proof, publicInputsMap] = generateNargoProof({proposer: nargoValPub, salt: nargoSalt});
 
 
