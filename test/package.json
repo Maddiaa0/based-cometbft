@@ -12,7 +12,9 @@
     "update": "aztec-builder update --contract . && ./.github/scripts/update_contract.sh $(grep -oP 'tag\\s*=\\s*\"\\K[^\"]+' \"Nargo.toml\" | head -1)"
   },
   "dependencies": {
-    "ethers": "^6.13.1"
+    "ethers": "^6.13.1",
+    "json2toml": "^6.1.0",
+    "toml": "^3.0.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",

@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
+import {UltraVerifier as VrfVerifier} from "./vrfVerifier.sol";
+
 // Note: when reading this contract, please note i am not prioritizing efficiency in anyway
 // do not remember me like this
 contract SimpleProposer {
@@ -14,26 +16,31 @@ contract SimpleProposer {
     mapping(bytes32 pubkey => bool proposer) public $proposerMapping;
 
     uint256 public $currentSlot = 0;
+
+    VrfVerifier verifier;
+
+    constructor() {
+        $loterryWinnigValues[0] = bytes32(type(uint256).max);
+        verifier = new VrfVerifier();
+    }
     
-    // Stage 0 - we mock the vrf (it is not verifiable or random at all)
-    // Stage 1 - we accept values proposers that submit a snark of their public key and some randomness result
-    // any sufficient pre image resistant hash function will do
-    // The SNARK will:
-    // - need to prove who the proposer is who they say they are
-    // - need to prove k
-    function submitVRF(bytes32 proposer, bytes32 randomness) public {
-        if (!$proposerMapping[proposer]) {
-            revert("Proposer not in registry");
-        }
+    // Proposer submits that they got the lowest result in a "vrf" just a snark of a hash function, not even a real hash function
+    // it is currently pedersen but i digress
+    function submitVRF(bytes calldata proof, bytes32[] calldata publicInputs) public {
+        // if (!$proposerMapping[proposer]) {
+        //     revert("Proposer not in registry");
+        // }
 
         bytes32 currentWinningChallenge = $loterryWinnigValues[$currentSlot];
 
-        // TODO: replace with snark
-        bytes32 newChallenge = sha256(abi.encodePacked(proposer, randomness));
+        bytes32 proposer = publicInputs[0];
+        bytes32 vrfResult = publicInputs[1];
+
+        verifier.verify(proof, publicInputs);
 
         // If somebody can submit the smaller winning challenge, then they win
-        if (newChallenge < currentWinningChallenge) {
-            $loterryWinnigValues[$currentSlot] = newChallenge ;
+        if (vrfResult < currentWinningChallenge) {
+            $loterryWinnigValues[$currentSlot] = vrfResult;
             $slotProposer[$currentSlot] = proposer;
         }
     }
